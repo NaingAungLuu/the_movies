@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/root_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGrey"
+    tools:context=".activities.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tbHome"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorBackground"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Movies"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center"
+                android:textSize="@dimen/textsize_medium_2x"
+                android:fontFamily="@font/poppins_regular"
+                />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include
+        layout="@layout/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavBar"
+
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="@color/colorBackground"
+        android:elevation="15dp"
+        app:elevation="15dp"
+        app:itemIconTint="@color/bottom_app_bar"
+        app:itemTextAppearanceActive="@style/TextAppearance.BottomNavBar.Active"
+        app:itemTextAppearanceInactive="@style/TextAppearance.BottomNavBar"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_bottom_app_bar"
+        android:clipToPadding="false"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
