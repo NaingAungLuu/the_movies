@@ -1,56 +1,41 @@
 package com.androboy.themovies.mvp.presenter
 
+import android.app.Activity
+import com.androboy.themovies.activities.BaseActivity
 import com.androboy.themovies.data.model.MovieModelImpl
 import com.androboy.themovies.mvp.view.MovieListView
+import androidx.lifecycle.Observer
 
 class MovieListPresenter : BasePresenter<MovieListView>() {
 
     private val model = MovieModelImpl
 
-    override fun onCreate()
+
+
+    fun onUiReady(activity : BaseActivity)
     {
-        model.getNowPlaying(onSuccess = {
-
+        model.getNowPlaying {
+            mView.showErrorMessage(it)
+        }.observe(activity , Observer {
             mView.showNowComingMovies(it)
-            mView.toggleProgressBar()
+        } )
 
-        },onFailure = {
-
+        model.getPopular{
             mView.showErrorMessage(it)
-
-        })
-
-        model.getPopular(onSuccess = {
-
+        }.observe(activity , Observer {
             mView.showPopularMovies(it)
-            mView.toggleProgressBar()
-
-        },onFailure = {
-
-            mView.showErrorMessage(it)
-
         })
 
-        model.getTopRated(onSuccess = {
-
+        model.getTopRated{
+            mView.showErrorMessage(it)
+        }.observe(activity , Observer{
             mView.showTopRatedMovies(it)
-            mView.toggleProgressBar()
-
-        },onFailure = {
-
-            mView.showErrorMessage(it)
-
         })
 
-        model.getUpcoming(onSuccess = {
-
-            mView.showUpcomingMovies(it)
-            mView.toggleProgressBar()
-
-        },onFailure = {
-
+        model.getUpcoming{
             mView.showErrorMessage(it)
-
+        }.observe(activity , Observer{
+            mView.showUpcomingMovies(it)
         })
 
     }

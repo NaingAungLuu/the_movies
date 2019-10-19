@@ -10,15 +10,16 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.androboy.themovies.R
-import com.androboy.themovies.activities.BaseActivity
+import com.androboy.themovies.activities.MainActivity
 import com.androboy.themovies.adapters.HomeMovieListAdapter
 import com.androboy.themovies.data.vos.MovieVO
+import com.androboy.themovies.delegates.MovieItemDelegate
 import com.androboy.themovies.mvp.presenter.MovieListPresenter
 import com.androboy.themovies.mvp.view.MovieListView
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
-class HomeFragment : Fragment() , MovieListView {
+class HomeFragment : Fragment() , MovieListView , MovieItemDelegate {
 
 
 
@@ -31,6 +32,7 @@ class HomeFragment : Fragment() , MovieListView {
 
     override fun showNowComingMovies(movies: List<MovieVO>) {
         mNowPlayingMovieListAdapter.setNewData(movies.toMutableList())
+
     }
 
     override fun showPopularMovies(movies: List<MovieVO>) {
@@ -43,6 +45,7 @@ class HomeFragment : Fragment() , MovieListView {
 
     override fun showUpcomingMovies(movies: List<MovieVO>) {
         mUpcomingMovieListAdapter.setNewData(movies.toMutableList())
+        toggleProgressBar()
     }
 
     override fun showErrorMessage(msg: String) {
@@ -50,15 +53,23 @@ class HomeFragment : Fragment() , MovieListView {
     }
 
     override fun toggleProgressBar() {
+        println(view!!.pbLoading.isVisible)
+
         if(pbLoading.isVisible)
         {
-            pbLoading.visibility = ProgressBar.INVISIBLE
+            pbLoading?.visibility = ProgressBar.INVISIBLE
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onTapMovieItem(movieID : Int) {
+        println("Loading the detail fragment")
+        (activity as MainActivity).supportActionBar?.hide()
+        (activity as MainActivity).loadFragment(MovieDetailFragment(movieID))
+
+
+//        activity to MainActivity().supportActionBar?.hide()
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,12 +79,11 @@ class HomeFragment : Fragment() , MovieListView {
 
         val view = inflater.inflate(R.layout.fragment_home , container , false)
 
-        mPresenter = MovieListPresenter()
-        mPresenter.initPresenter(this)
-        mNowPlayingMovieListAdapter = HomeMovieListAdapter()
-        mPopularMovieListAdapter = HomeMovieListAdapter()
-        mTopRatedMovieListAdapter = HomeMovieListAdapter()
-        mUpcomingMovieListAdapter = HomeMovieListAdapter()
+
+        mNowPlayingMovieListAdapter = HomeMovieListAdapter(this)
+        mPopularMovieListAdapter = HomeMovieListAdapter(this)
+        mTopRatedMovieListAdapter = HomeMovieListAdapter(this)
+        mUpcomingMovieListAdapter = HomeMovieListAdapter(this)
 
         view.rvNowPlaying.adapter = mNowPlayingMovieListAdapter
         view.rvNowPlaying.layoutManager = LinearLayoutManager(view.context , LinearLayoutManager.HORIZONTAL , false)
@@ -87,8 +97,17 @@ class HomeFragment : Fragment() , MovieListView {
         view.rvTopRated.adapter = mTopRatedMovieListAdapter
         view.rvTopRated.layoutManager = LinearLayoutManager(view.context , LinearLayoutManager.HORIZONTAL , false)
 
-        mPresenter.onCreate()
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).supportActionBar?.show()
+        view.pbLoading.visibility = ProgressBar.VISIBLE
+        mPresenter = MovieListPresenter()
+        mPresenter.initPresenter(this)
+        mPresenter.onUiReady((activity as MainActivity))
+
     }
 }

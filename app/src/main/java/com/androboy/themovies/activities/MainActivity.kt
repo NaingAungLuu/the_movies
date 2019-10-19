@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.androboy.themovies.R
 import com.androboy.themovies.fragments.HomeFragment
+import com.androboy.themovies.fragments.MovieDetailFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -25,9 +26,10 @@ class MainActivity : BaseActivity() , BottomNavigationView.OnNavigationItemSelec
         bottomNavBar.setOnNavigationItemSelectedListener(this)
         loadFragment(HomeFragment())
 
+
     }
 
-    fun loadFragment(fragment: Fragment):Boolean
+    fun loadFragment(fragment: Fragment)
     {
         if(fragment != null)
         {
@@ -35,10 +37,8 @@ class MainActivity : BaseActivity() , BottomNavigationView.OnNavigationItemSelec
                 .beginTransaction()
                 .replace(R.id.fragment_view, fragment)
                 .commit()
-            return true
         }
 
-        return false
 
     }
 

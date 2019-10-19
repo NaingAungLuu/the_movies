@@ -1,75 +1,64 @@
 package com.androboy.themovies.data.model
 
-import com.androboy.themovies.data.vos.MovieVO
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.androboy.themovies.data.vos.*
 import com.androboy.themovies.utils.API_KEY
 import com.androboy.themovies.utils.LANGUAGE
 
 object MovieModelImpl : BaseModel() ,MovieModel {
 
-    override fun getNowPlaying(
-        onSuccess: (List<MovieVO>) -> Unit,
-        onFailure: (msg: String) -> Unit
-    ) {
-            dataAgent.getNowPlaying(API_KEY , LANGUAGE , { movies ->
+    override fun getNowPlaying(onFailure: (msg: String) -> Unit): LiveData<List<MovieVO>> {
 
-                onSuccess(movies)
-
-            }, {msg ->
-
-                onFailure(msg)
-
-            })
-    }
-
-    override fun getPopular(onSuccess: (List<MovieVO>) -> Unit,
-                            onFailure: (msg: String) -> Unit) {
-
-        dataAgent.getPopular(API_KEY , LANGUAGE , { movies ->
-
-            onSuccess(movies)
-
-        }, {msg ->
-
-            onFailure(msg)
-
-        })
+        return Transformations.distinctUntilChanged(
+            movieDatabase.nowPlayingDao().getNowPlayingMovies()
+        )
 
     }
 
-    override fun getTopRated(onSuccess: (List<MovieVO>) -> Unit,
-                             onFailure: (msg: String) -> Unit) {
 
-        dataAgent.getTopRated(API_KEY , LANGUAGE , { movies ->
+    override fun getPopular(onFailure : (msg : String ) ->Unit) : LiveData<List<MovieVO>> {
 
-            onSuccess(movies)
-
-        }, {msg ->
-
-            onFailure(msg)
-
-        })
+        return Transformations.distinctUntilChanged(
+            movieDatabase.popularDao().getPopularMovies()
+        )
 
     }
 
-    override fun getUpcoming(onSuccess: (List<MovieVO>) -> Unit,
-                             onFailure: (msg: String) -> Unit) {
+    override fun getTopRated(onFailure : (msg : String ) ->Unit) : LiveData<List<MovieVO>> {
 
-        dataAgent.getUpcoming(API_KEY , LANGUAGE , { movies ->
+        return Transformations.distinctUntilChanged(
+            movieDatabase.TopRatedDao().getTopRatedMovies()
+        )
 
-            onSuccess(movies)
 
-        }, {msg ->
 
-            onFailure(msg)
-
-        })
 
     }
 
-    override fun getSimilarMovies(onSuccess: (List<MovieVO>) -> Unit,
+    override fun getUpcoming(onFailure : (msg : String ) ->Unit) : LiveData<List<MovieVO>> {
+
+        return Transformations.distinctUntilChanged(
+            movieDatabase.UpComingDao().getUpComingMovies()
+        )
+
+
+
+    }
+
+    override fun getSimilarMovies(movieID : Int,
+                                  onSuccess: (List<MovieVO>) -> Unit,
                                   onFailure: (msg: String) -> Unit
     ) {
+        dataAgent.getSimilarMovies(API_KEY ,movieID , {
 
+            onSuccess(it)
+
+        } , {
+
+                onFailure(it)
+
+        })
     }
 
     override fun searchMovie(onSuccess: (List<MovieVO>) -> Unit,
@@ -77,5 +66,17 @@ object MovieModelImpl : BaseModel() ,MovieModel {
 
     }
 
+    override fun getMovieDetails(movieID : Int, onSuccess: (MovieVO) -> Unit, onFailure: (msg: String) -> Unit) {
 
+        dataAgent.getMovieDetails(movieID , API_KEY , {
+
+            onSuccess(it)
+
+        },{
+
+            onFailure(it)
+
+        })
+
+    }
 }

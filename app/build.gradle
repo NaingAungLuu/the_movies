@@ -59,4 +59,10 @@ dependencies {
     //Blurred View
     implementation 'com.fivehundredpx:blurringview:1.0.0'
 
+    //LiveData
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+
+    //Work Manager
+    implementation "androidx.work:work-runtime:2.2.0"
+
 }

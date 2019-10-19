@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitDataAgent : MovieDataAgent {
 
+
     private lateinit var movieApi : MovieApi
 
     init {
@@ -177,5 +178,77 @@ object RetrofitDataAgent : MovieDataAgent {
 
     }
 
+    override fun getSimilarMovies(
+        apiKey: String,
+        movieID : Int,
+        onSuccess: (List<MovieVO>) -> Unit,
+        onFailure: (msg: String) -> Unit
+    ) {
+        val call = movieApi.getSimilarMovies(movieID  , apiKey)
+        call.enqueue(object : Callback<NowPlayingMovieResponse>{
 
+
+
+            override fun onFailure(call: Call<NowPlayingMovieResponse>, t: Throwable) {
+
+                onFailure(t.localizedMessage)
+
+            }
+
+            override fun onResponse(
+                call: Call<NowPlayingMovieResponse>,
+                response: Response<NowPlayingMovieResponse>
+            ) {
+
+                    val movieResponse = response.body()
+
+                    if(response != null)
+                    {
+                        movieResponse?.let {
+                            onSuccess(it.results)
+                        }
+                    }
+                    else
+                    {
+                        onFailure("Network Failed")
+                    }
+
+            }
+        })
+    }
+
+    override fun getMovieDetails(
+        movieID: Int,
+        apiKey: String,
+        onSuccess: (MovieVO) -> Unit,
+        onFailure: (msg: String) -> Unit
+    ) {
+        val call = movieApi.getMovieDetails(movieID , apiKey)
+        call.enqueue(object : Callback<MovieVO>{
+
+            override fun onFailure(call: Call<MovieVO>, t: Throwable) {
+
+                onFailure(t.localizedMessage)
+
+            }
+
+            override fun onResponse(call: Call<MovieVO>, response: Response<MovieVO>) {
+
+                val movieResponse = response.body()
+                if(response != null)
+                {
+                    onSuccess(movieResponse!!)
+                }
+                else
+                {
+                    onFailure("Network Error")
+                }
+
+
+            }
+
+
+        })
+
+    }
 }

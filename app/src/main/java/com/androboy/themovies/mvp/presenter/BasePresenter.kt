@@ -1,9 +1,10 @@
 package com.androboy.themovies.mvp.presenter
 
+import androidx.lifecycle.ViewModel
 import com.androboy.themovies.data.model.MovieModelImpl
 import com.androboy.themovies.mvp.view.BaseView
 
-abstract class BasePresenter<T : BaseView> {
+abstract class BasePresenter<T : BaseView> : ViewModel() {
 
 
 
@@ -14,7 +15,7 @@ abstract class BasePresenter<T : BaseView> {
         this.mView = view
     }
 
-    open fun onCreate(){}
+
 
 
 }
