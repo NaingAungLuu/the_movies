@@ -30,6 +30,7 @@ interface MovieModel {
         onFailure : (msg : String ) ->Unit)
 
     fun searchMovie(
+        query : String,
         onSuccess : (List<MovieVO>) -> Unit,
         onFailure : (msg : String ) ->Unit)
 

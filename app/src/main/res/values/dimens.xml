@@ -14,5 +14,6 @@
     <dimen name="textsize_medium_2x">20dp</dimen>
     <dimen name="textsize_medium_3x">24dp</dimen>
     <dimen name="textsize_large">32dp</dimen>
+    <dimen name="margin_mini">4dp</dimen>
 
 </resources>

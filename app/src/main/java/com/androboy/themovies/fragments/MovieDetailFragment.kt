@@ -6,16 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.api.load
+import coil.transform.BlurTransformation
 import com.androboy.themovies.R
 import com.androboy.themovies.activities.MainActivity
-import com.androboy.themovies.adapters.HomeMovieListAdapter
+import com.androboy.themovies.adapters.MovieListAdapter
 import com.androboy.themovies.data.vos.MovieVO
 import com.androboy.themovies.delegates.MovieItemDelegate
 import com.androboy.themovies.mvp.presenter.MovieDetailPresenter
 import com.androboy.themovies.mvp.view.MovieDetailView
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_movie_detail.*
+import com.androboy.themovies.utils.LIST_TYPE
 import kotlinx.android.synthetic.main.fragment_movie_detail.view.*
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import androidx.annotation.NonNull
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+
+
 
 class MovieDetailFragment(private val movieID: Int) : Fragment() , MovieDetailView , MovieItemDelegate{
 
@@ -36,15 +42,19 @@ class MovieDetailFragment(private val movieID: Int) : Fragment() , MovieDetailVi
 
     override fun showMovieDetails(movie: MovieVO) {
 
-        Glide.with(view!!).load("http://image.tmdb.org/t/p/w300/${movie.posterPath}").into(ivMovieDetailPoster)
-        Glide.with(view!!).load("http://image.tmdb.org/t/p/w300/${movie.posterPath}").into(ivBackground)
+        view!!.ivMovieDetailPoster.load("http://image.tmdb.org/t/p/w300/${movie.posterPath}")
+        view!!.ivBackground.load("http://image.tmdb.org/t/p/w300/${movie.posterPath}") {
+            this.transformations(
+                BlurTransformation(context!!, 10f, 5f)
+            )
+        }
         view!!.tvMovieDetailOverview.text = movie.overview
-        view!!.blurringView.setBlurredView(view!!.ivBackground)
 
     }
 
     private lateinit var mPresenter : MovieDetailPresenter
-    private lateinit var mSimilarMovieListAdapter : HomeMovieListAdapter
+    private lateinit var mSimilarMovieListAdapter : MovieListAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,26 +65,30 @@ class MovieDetailFragment(private val movieID: Int) : Fragment() , MovieDetailVi
         val view = inflater.inflate(R.layout.fragment_movie_detail , container , false)
 
 
-        mSimilarMovieListAdapter = HomeMovieListAdapter(this)
+        mSimilarMovieListAdapter = MovieListAdapter(this , LIST_TYPE)
 
-        mPresenter = MovieDetailPresenter(movieID)
-        mPresenter.initPresenter(this)
-        mPresenter.onCreate()
+
 
         view.rvDetailMoreLikeThis.adapter = mSimilarMovieListAdapter
         view.rvDetailMoreLikeThis.layoutManager = LinearLayoutManager(context , LinearLayoutManager.HORIZONTAL , false)
         view.btnCloseDetail.setOnClickListener {
 
-            (activity as MainActivity).loadFragment(HomeFragment())
+            (activity as MainActivity).onBackPressed()
+        }
+
+        view.btnMovieDetailPlayVideo.setOnClickListener {
+            (activity as MainActivity).playVideo()
         }
 
 
         return view
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-
+        mPresenter = MovieDetailPresenter(movieID)
+        mPresenter.initPresenter(this)
+        mPresenter.onUiReady()
     }
 }

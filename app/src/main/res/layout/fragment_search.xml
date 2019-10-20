@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/margin_medium_2x"
+
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,6 +19,11 @@
             android:paddingLeft="@dimen/margin_medium"
             android:textSize="@dimen/text_size_medium"
             android:layout_margin="@dimen/margin_small"
+            android:inputType="text"
+            android:maxLines="1"
+            android:elevation="10dp"
+            android:imeOptions="actionSearch"
+            android:imeActionLabel="SEARCH_MOVIE"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/darker_gray"
             android:background="@drawable/bg_et_search"
@@ -26,15 +31,18 @@
             android:drawablePadding="@dimen/margin_small"
             />
 
-        <ImageButton
+        <ImageView
+            android:id="@+id/btnMovieSearchClearText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_close_black_24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:padding="@dimen/margin_small"
+            android:background="@drawable/bg_search_clear_button"
             android:layout_alignRight="@id/etSearch"
             android:layout_alignTop="@id/etSearch"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_small"
+
             />
 
 
@@ -44,17 +52,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Results"
-        android:background="@android:color/darker_gray"
-        android:padding="@dimen/margin_small"
+        android:background="#7C7C7C"
+        android:layout_marginTop="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin_medium"
         android:textColor="@android:color/white"
         android:fontFamily="@font/roboto_medium"
         android:textSize="@dimen/text_size_medium"
         />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearchResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_small"
+        android:layout_margin="@dimen/margin_mini"
         />
 
 </LinearLayout>

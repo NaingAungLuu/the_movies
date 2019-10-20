@@ -19,4 +19,7 @@ abstract class UpComingDao {
     @Query("SELECT * FROM movies INNER JOIN upcoming_movies ON movies.movie_id = upcoming_movies.movie_id")
     abstract fun getUpComingMovies(): LiveData<List<MovieVO>>
 
+    @Query("DELETE FROM upcoming_movies")
+    abstract fun clearTable()
+
 }

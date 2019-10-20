@@ -20,20 +20,7 @@
         android:scaleType="centerCrop"
         android:layout_alignTop="@id/layoutDetail"
         android:layout_alignBottom="@id/layoutDetail"
-        />
-
-
-    <com.fivehundredpx.android.blur.BlurringView
-        android:id="@+id/blurringView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/layoutDetail"
-        android:paddingRight="-8dp"
-        app:blurRadius="20"
-        app:downsampleFactor="6"
-        app:overlayColor="#51444444"
         android:foreground="@drawable/fg_blur_view"
-        android:layout_alignBottom="@id/layoutDetail"
         />
 
         <LinearLayout
@@ -132,6 +119,7 @@
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/btnMovieDetailPlayVideo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorAccent"

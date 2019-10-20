@@ -1,5 +1,6 @@
 package com.androboy.themovies.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.androboy.themovies.R
 import com.androboy.themovies.fragments.HomeFragment
 import com.androboy.themovies.fragments.MovieDetailFragment
+import com.androboy.themovies.fragments.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -31,7 +33,15 @@ class MainActivity : BaseActivity() , BottomNavigationView.OnNavigationItemSelec
 
     fun loadFragment(fragment: Fragment)
     {
-        if(fragment != null)
+        if(fragment != null && fragment !is HomeFragment)
+        {
+            supportFragmentManager
+                .beginTransaction()
+                .addToBackStack("${fragment.id}")
+                .replace(R.id.fragment_view, fragment)
+                .commit()
+        }
+        else if(fragment != null && fragment is HomeFragment)
         {
             supportFragmentManager
                 .beginTransaction()
@@ -47,7 +57,7 @@ class MainActivity : BaseActivity() , BottomNavigationView.OnNavigationItemSelec
         when(id)
         {
             R.id.mnu_home -> loadFragment(HomeFragment())
-            R.id.mnu_search -> loadFragment(HomeFragment())
+            R.id.mnu_search -> loadFragment(SearchFragment())
             R.id.mnu_coming_soon -> showLongSnackBar("Coming Soon")
             R.id.mnu_downloads -> showLongSnackBar("Downloads")
             R.id.mnu_more -> showLongSnackBar("More")
@@ -56,4 +66,10 @@ class MainActivity : BaseActivity() , BottomNavigationView.OnNavigationItemSelec
         return true
 
     }
+
+    fun playVideo()
+    {
+        startActivity(Intent(applicationContext , VideoPlayerActivity::class.java))
+    }
+
 }

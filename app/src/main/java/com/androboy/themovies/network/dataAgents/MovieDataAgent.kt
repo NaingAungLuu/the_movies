@@ -34,4 +34,9 @@ interface MovieDataAgent {
                         onSuccess: (MovieVO) -> Unit,
                         onFailure: (msg: String) -> Unit)
 
+    fun searchMovie(    apiKey : String,
+                        query : String,
+                        onSuccess: (List<MovieVO>) -> Unit,
+                        onFailure: (msg: String) -> Unit)
+
 }

@@ -1,6 +1,8 @@
 package com.androboy.themovies.views.holders
 
 import android.view.View
+import coil.api.load
+import coil.transform.BlurTransformation
 import com.androboy.themovies.data.vos.MovieVO
 import com.androboy.themovies.delegates.MovieItemDelegate
 import com.bumptech.glide.Glide
@@ -20,7 +22,9 @@ class MovieItemViewHolder(itemView : View , delegate : MovieItemDelegate) : Base
 
 
     override fun bindData(data: MovieVO) {
-        Glide.with(itemView).load("http://image.tmdb.org/t/p/w300/${data.posterPath}").into(itemView.ivPoster)
+        itemView.ivPoster.load("http://image.tmdb.org/t/p/w300/${data.posterPath}"){
+            this.crossfade(true)
+        }
         println("http://image.tmdb.org/t/p/w300/${data.posterPath}")
     }
 }

@@ -8,7 +8,7 @@ class MovieDetailPresenter(private val movieID : Int) : BasePresenter<MovieDetai
     private val model = MovieModelImpl
 
 
-    fun onCreate() {
+    fun onUiReady() {
 
         model.getSimilarMovies(movieID , {
 

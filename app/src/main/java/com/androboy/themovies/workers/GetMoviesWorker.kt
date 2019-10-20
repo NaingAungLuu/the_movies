@@ -20,6 +20,7 @@ class GetMoviesWorker(context : Context, workerParams : WorkerParameters) : Base
         dataAgent.getNowPlaying(API_KEY , LANGUAGE , { movies ->
 
             movieDao.insertMovies(movies)
+            nowPlayingDao.clearTable()
             val nowPLayingMovieList = ArrayList<NowPlaying>()
             for(movie : MovieVO in movies)
             {
@@ -41,6 +42,7 @@ class GetMoviesWorker(context : Context, workerParams : WorkerParameters) : Base
         dataAgent.getPopular(API_KEY , LANGUAGE , { movies ->
 
                 movieDao.insertMovies(movies)
+                popularDao.clearTable()
                 val popularMovieList = ArrayList<Popular>()
                 for(movie : MovieVO in movies)
                 {
@@ -62,6 +64,7 @@ class GetMoviesWorker(context : Context, workerParams : WorkerParameters) : Base
         dataAgent.getTopRated(API_KEY , LANGUAGE , { movies ->
 
             movieDao.insertMovies(movies)
+            topRatedDao.clearTable()
             val topRatedMovieList = ArrayList<TopRated>()
             for(movie : MovieVO in movies)
             {
@@ -82,6 +85,7 @@ class GetMoviesWorker(context : Context, workerParams : WorkerParameters) : Base
         dataAgent.getUpcoming(API_KEY , LANGUAGE , { movies ->
 
             movieDao.insertMovies(movies)
+            upComingDao.clearTable()
             val upComingMovieList = ArrayList<UpComing>()
             for(movie : MovieVO in movies)
             {

@@ -3,6 +3,7 @@ package com.androboy.themovies.network.dataAgents
 import com.androboy.themovies.data.vos.MovieVO
 import com.androboy.themovies.network.MovieApi
 import com.androboy.themovies.network.response.NowPlayingMovieResponse
+import com.androboy.themovies.network.response.SearchResponse
 import com.androboy.themovies.utils.API_KEY
 import com.androboy.themovies.utils.BASE_URL
 import okhttp3.OkHttpClient
@@ -11,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitDataAgent : MovieDataAgent {
+
 
 
     private lateinit var movieApi : MovieApi
@@ -175,7 +177,6 @@ object RetrofitDataAgent : MovieDataAgent {
             }
 
         })
-
     }
 
     override fun getSimilarMovies(
@@ -237,7 +238,7 @@ object RetrofitDataAgent : MovieDataAgent {
                 val movieResponse = response.body()
                 if(response != null)
                 {
-                    onSuccess(movieResponse!!)
+                    movieResponse?.let(onSuccess)
                 }
                 else
                 {
@@ -247,6 +248,44 @@ object RetrofitDataAgent : MovieDataAgent {
 
             }
 
+
+        })
+
+    }
+
+    override fun searchMovie(
+        apiKey: String,
+        query: String,
+        onSuccess: (List<MovieVO>) -> Unit,
+        onFailure: (msg: String) -> Unit
+    ) {
+
+        val call = movieApi.searchMovie(apiKey , query )
+        call.enqueue(object : Callback<SearchResponse>{
+
+            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+
+                onFailure(t.localizedMessage)
+
+            }
+
+            override fun onResponse(
+                call: Call<SearchResponse>,
+                response: Response<SearchResponse>
+            ) {
+
+                val searchResponse = response.body()
+
+                if(searchResponse != null)
+                {
+                    onSuccess(searchResponse.results)
+                }
+                else
+                {
+                    onFailure("Network Error Occurred")
+                }
+
+            }
 
         })
 

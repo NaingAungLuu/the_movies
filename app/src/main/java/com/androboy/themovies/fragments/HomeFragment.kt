@@ -11,11 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.androboy.themovies.R
 import com.androboy.themovies.activities.MainActivity
-import com.androboy.themovies.adapters.HomeMovieListAdapter
+import com.androboy.themovies.adapters.MovieListAdapter
 import com.androboy.themovies.data.vos.MovieVO
 import com.androboy.themovies.delegates.MovieItemDelegate
 import com.androboy.themovies.mvp.presenter.MovieListPresenter
 import com.androboy.themovies.mvp.view.MovieListView
+import com.androboy.themovies.utils.LIST_TYPE
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
@@ -24,10 +25,10 @@ class HomeFragment : Fragment() , MovieListView , MovieItemDelegate {
 
 
     private lateinit var mPresenter : MovieListPresenter
-    private lateinit var mNowPlayingMovieListAdapter : HomeMovieListAdapter
-    private lateinit var mPopularMovieListAdapter : HomeMovieListAdapter
-    private lateinit var mTopRatedMovieListAdapter : HomeMovieListAdapter
-    private lateinit var mUpcomingMovieListAdapter : HomeMovieListAdapter
+    private lateinit var mNowPlayingMovieListAdapter : MovieListAdapter
+    private lateinit var mPopularMovieListAdapter : MovieListAdapter
+    private lateinit var mTopRatedMovieListAdapter : MovieListAdapter
+    private lateinit var mUpcomingMovieListAdapter : MovieListAdapter
 
 
     override fun showNowComingMovies(movies: List<MovieVO>) {
@@ -80,10 +81,10 @@ class HomeFragment : Fragment() , MovieListView , MovieItemDelegate {
         val view = inflater.inflate(R.layout.fragment_home , container , false)
 
 
-        mNowPlayingMovieListAdapter = HomeMovieListAdapter(this)
-        mPopularMovieListAdapter = HomeMovieListAdapter(this)
-        mTopRatedMovieListAdapter = HomeMovieListAdapter(this)
-        mUpcomingMovieListAdapter = HomeMovieListAdapter(this)
+        mNowPlayingMovieListAdapter = MovieListAdapter(this , LIST_TYPE)
+        mPopularMovieListAdapter = MovieListAdapter(this , LIST_TYPE)
+        mTopRatedMovieListAdapter = MovieListAdapter(this , LIST_TYPE)
+        mUpcomingMovieListAdapter = MovieListAdapter(this , LIST_TYPE)
 
         view.rvNowPlaying.adapter = mNowPlayingMovieListAdapter
         view.rvNowPlaying.layoutManager = LinearLayoutManager(view.context , LinearLayoutManager.HORIZONTAL , false)

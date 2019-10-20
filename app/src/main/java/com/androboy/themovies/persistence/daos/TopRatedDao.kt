@@ -18,4 +18,7 @@ abstract class TopRatedDao {
 
     @Query("SELECT * FROM movies INNER JOIN top_rated_movies ON movies.movie_id = top_rated_movies.movie_id")
     abstract fun getTopRatedMovies(): LiveData<List<MovieVO>>
+
+    @Query("DELETE FROM top_rated_movies")
+    abstract fun clearTable()
 }

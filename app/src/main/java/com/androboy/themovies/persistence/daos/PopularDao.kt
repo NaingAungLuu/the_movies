@@ -18,4 +18,8 @@ abstract class PopularDao {
 
     @Query("SELECT * FROM movies INNER JOIN popular_movies ON movies.movie_id = popular_movies.movie_id")
     abstract fun getPopularMovies(): LiveData<List<MovieVO>>
+
+    @Query("DELETE FROM popular_movies")
+    abstract fun clearTable()
+
 }

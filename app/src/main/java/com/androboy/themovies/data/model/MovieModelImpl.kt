@@ -61,8 +61,19 @@ object MovieModelImpl : BaseModel() ,MovieModel {
         })
     }
 
-    override fun searchMovie(onSuccess: (List<MovieVO>) -> Unit,
-                             onFailure: (msg: String) -> Unit) {
+    override fun searchMovie(   query : String,
+                                onSuccess: (List<MovieVO>) -> Unit,
+                                onFailure: (msg: String) -> Unit) {
+
+        dataAgent.searchMovie(API_KEY , query , {
+
+            onSuccess(it)
+
+        },{
+
+            onFailure(it)
+
+        })
 
     }
 

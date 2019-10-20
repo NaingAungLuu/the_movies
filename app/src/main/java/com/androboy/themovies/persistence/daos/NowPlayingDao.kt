@@ -18,7 +18,8 @@ abstract class NowPlayingDao {
     @Query("SELECT * FROM movies INNER JOIN now_playing_movies ON movies.movie_id = now_playing_movies.movie_id")
     abstract fun getNowPlayingMovies():LiveData<List<MovieVO>>
 
-
+    @Query("DELETE FROM now_playing_movies")
+    abstract fun clearTable()
 
 
 
